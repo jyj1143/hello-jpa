@@ -65,8 +65,19 @@ public class JpaMain {
             em.persist(member1);
             em.persist(member2);*/
 
-            Member member = em.find(Member.class, 150L);
-            member.setName("ZZZZ");
+            /*Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZ");*/
+
+
+            //엔티티 조회
+            Member findMember = em.find(Member.class, 150L);
+
+            // 엔티티 데이터 수정
+            findMember.setName("AAAA");
+
+            // 준영속화
+            em.detach(findMember);
+
 
             System.out.println("==== BEFORE COMMIT ====");
             tx.commit();
