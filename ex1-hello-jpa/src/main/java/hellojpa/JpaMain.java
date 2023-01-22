@@ -43,17 +43,34 @@ public class JpaMain {
 //            }
 
 
-            //비영속
-            Member member = new Member();
-            member.setId(100L);
-            member.setName("Hello100");
+//            //비영속
+//            Member member = new Member();
+//            member.setId(101L);
+//            member.setName("Hello100");
+//
+//            //영속
+//            System.out.println("==== BEFORE PERSIST ====");
+//            em.persist(member);
+//            System.out.println("==== AFTER PERSIST ====");
+//
+//            Member findMember = em.find(Member.class, 101L);
+//            System.out.println("findMember.getId() = " + findMember.getId());
+//            System.out.println("findMember.getName() = " + findMember.getName());
 
-            //영속
-            System.out.println("==== BEFORE ====");
-            em.persist(member);
-            System.out.println("==== AFTER ====");
 
+            // 영속
+            /*Member member1 = new Member(150L, "A");
+            Member member2 = new Member(160L, "B");
+
+            em.persist(member1);
+            em.persist(member2);*/
+
+            Member member = em.find(Member.class, 150L);
+            member.setName("ZZZZ");
+
+            System.out.println("==== BEFORE COMMIT ====");
             tx.commit();
+            System.out.println("==== AFTER COMMIT ====");
         } catch (Exception e) {
             tx.rollback();
         }finally {
