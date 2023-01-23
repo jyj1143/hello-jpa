@@ -69,14 +69,15 @@ public class JpaMain {
             member.setName("ZZZZ");*/
 
 
-            //엔티티 조회
+            /*//엔티티 조회
             Member findMember = em.find(Member.class, 150L);
 
             // 엔티티 데이터 수정
             findMember.setName("AAAA");
 
             // 준영속화
-            em.detach(findMember);
+            em.detach(findMember);*/
+
 
 
             System.out.println("==== BEFORE COMMIT ====");
