@@ -10,11 +10,11 @@ public class MemberProduct {
     private Long id;
 
     @ManyToOne
-    @JoinColumn("MEMBER_ID")
+    @JoinColumn(name = "MEMBER_ID")
     private Member member;
 
     @ManyToOne
-    @JoinColumn("PRODUCT_ID")
+    @JoinColumn(name="PRODUCT_ID")
     private Product product;
 
 

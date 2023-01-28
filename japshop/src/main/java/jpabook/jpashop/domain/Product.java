@@ -11,8 +11,8 @@ public class Product {
     @Column(name = "PRODUCT_ID")
     private Long id;
 
-    @ManyToMany(mappedBy = "products")
-    private List<Member> members = new ArrayList<>();
+//    @ManyToMany(mappedBy = "products")
+//    private List<Member> members = new ArrayList<>();
 
     @OneToMany(mappedBy = "product")
     List<MemberProduct> memberProducts = new ArrayList<>();
