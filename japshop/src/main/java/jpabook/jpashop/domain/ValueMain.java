@@ -16,12 +16,22 @@ public class ValueMain {
 
         try {
 
-            Member member = new Member();
-            member.setName("hello");
-//            member.setAddress(new Address("city", "street", "zipcode"));
-//            member.setPeriod(new Period());
+            Address address = new Address("city", "street", "10000");
 
-            em.persist(member);
+            Member member1 = new Member();
+            member1.setName("member1");
+            member1.setHomeAddress(address);
+            em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setName("member2");
+            member2.setHomeAddress(address);
+            em.persist(member2);
+
+//            member1.getHomeAddress().setCity("NewCity");
+
+            Address newAddress = new Address("NewCity", address.getStreet(), address.getZipcode());
+            member1.setHomeAddress(newAddress); // 새롭게 다시 설정
 
             tx.commit();
         } catch (Exception e) {
