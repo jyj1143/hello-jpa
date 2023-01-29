@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ProxyMain {
 
@@ -17,35 +18,32 @@ public class ProxyMain {
 
         try {
 
+            Team team1 = new Team();
+            team1.setName("TeamA");
+            em.persist(team1);
 
-//            Member member = new Member();
-//            member.setName("hello");
-//
-//            em.persist(member);
-//
-//            em.flush();
-//            em.clear();
-//
-////            Member findMember = em.find(Member.class, member.getId());
-//            Member findMember = em.getReference(Member.class, member.getId());
-//            System.out.println("findMember.getClass() = " + findMember.getClass());
-//            System.out.println("findMember.getId() = " + findMember.getId());
-//            System.out.println("findMember.getName() = " + findMember.getName());
+            Team team2 = new Team();
+            team2.setName("TeamA");
+            em.persist(team2);
 
             Member member1 = new Member();
             member1.setName("member1");
+            member1.setTeam(team1);
             em.persist(member1);
+
+            Member member2 = new Member();
+            member2.setName("member1");
+            member2.setTeam(team2);
+            em.persist(member2);
+
 
             em.flush();
             em.clear();
 
-            Member reference = em.getReference(Member.class, member1.getId());
-            System.out.println("reference.getClass() = " + reference.getClass());
-
-            Member m1 = em.find(Member.class, member1.getId());
-            System.out.println("m1.getClass() = " + m1.getClass());
-
-            System.out.println("m1 == reference : " + (m1 == reference));
+            List<Member> members = em.createQuery("select m from Member m join fetch m.team", Member.class)
+                    .getResultList();
+            //SQL: select * from Member
+            //SQL: select * from Team where TEAM_ID = xxx
 
             tx.commit();
         } catch (Exception e) {
