@@ -5,9 +5,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.time.LocalDateTime;
-import java.util.List;
 
-public class AdvancedMain {
+public class ValueMain {
     public static void main(String[] args) {
         EntityManagerFactory emf =  Persistence.createEntityManagerFactory("hello");
         EntityManager em = emf.createEntityManager();
@@ -18,13 +17,11 @@ public class AdvancedMain {
         try {
 
             Member member = new Member();
-            member.setName("user1");
-//            member.setCreatedBy("kim");
-//            member.setCreateDate(LocalDateTime.now());
+            member.setName("hello");
+//            member.setAddress(new Address("city", "street", "zipcode"));
+//            member.setPeriod(new Period());
 
             em.persist(member);
-            em.flush();
-            em.clear();
 
             tx.commit();
         } catch (Exception e) {

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Member extends BaseEntity{
+public class Member{
     @Id
     @GeneratedValue
     @Column(name = "MEMBER_ID")
@@ -17,20 +17,36 @@ public class Member extends BaseEntity{
 //    @Column(name = "TEAM_ID")
 //    private Long teamId;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "TEAM_ID")
     private Team team;
 
-    @OneToOne
-    @JoinColumn(name = "LOCKER_ID")
-    private Locker locker;
+    //기간 Period
+    @Embedded
+    private Period period;
+
+    //주소
+    @Embedded
+    private Address homeAddress;
+
+    @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(name="city", column = @Column(name="WORK_CITY")),
+            @AttributeOverride(name="street", column = @Column(name="WORK_STREET")),
+            @AttributeOverride(name="zipcode", column = @Column(name="WORK_ZIPCODE"))
+    })
+    private Address workAddress;
+
+//    @OneToOne
+//    @JoinColumn(name = "LOCKER_ID")
+//    private Locker locker;
 
 //    @ManyToMany
 //    @JoinTable(name="MEMBER_PRODUCT")
 //    private List<Product> products = new ArrayList<>();
 
-    @OneToMany(mappedBy = "member")
-    private List<MemberProduct> memberProducts = new ArrayList<>();
+//    @OneToMany(mappedBy = "member")
+//    private List<MemberProduct> memberProducts = new ArrayList<>();
     public Long getId() {
         return id;
     }
@@ -59,4 +75,20 @@ public class Member extends BaseEntity{
         this.team = team;
         team.getMembers().add(this);
     }
+
+    public Period getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(Period period) {
+        this.period = period;
+    }
+
+//    public Address getAddress() {
+//        return address;
+//    }
+//
+//    public void setAddress(Address address) {
+//        this.address = address;
+//    }
 }
