@@ -37,10 +37,14 @@ public class Member {
     )
     @Column(name = "FOOD_NAME")
     private Set<String> favoriteFoods = new HashSet<>();
-    @ElementCollection
-    @CollectionTable(name = "ADDRESS", joinColumns =
-    @JoinColumn(name = "MEMBER_ID"))
-    private List<Address> addressHistory = new ArrayList<>();
+//    @ElementCollection
+//    @CollectionTable(name = "ADDRESS", joinColumns =
+//    @JoinColumn(name = "MEMBER_ID"))
+//    private List<Address> addressHistory = new ArrayList<>();
+
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "MEMBER_ID")
+    private List<AddressEntity> addressHistory = new ArrayList<>();
 
     @Embedded
     @AttributeOverrides({
@@ -56,9 +60,7 @@ public class Member {
         return favoriteFoods;
     }
 
-    public List<Address> getAddressHistory() {
-        return addressHistory;
-    }
+
 //    @JoinColumn(name = "LOCKER_ID")
 //    private Locker locker;
 
@@ -128,5 +130,9 @@ public class Member {
 
     public void setWorkAddress(Address workAddress) {
         this.workAddress = workAddress;
+    }
+
+    public List<AddressEntity> getAddressHistory() {
+        return addressHistory;
     }
 }
