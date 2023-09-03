@@ -5,6 +5,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import java.util.List;
+import java.util.Set;
 
 public class JpaMain {
     public static void main(String[] args) {
@@ -15,50 +16,45 @@ public class JpaMain {
         tx.begin();
 
         try {
-
-            // 팀 저장
-            Team team = new Team();
-            team.setName("TeamA");
-            em.persist(team);
-
-            // 회원 저장
             Member member = new Member();
             member.setName("member1");
+            member.setHomeAddress(new Address("homeCity", "street", "10000"));
 
-            // 연관관계의 주인에 값 입력
-            member.setTeam(team);
+            member.getFavoriteFoods().add("치킨");
+            member.getFavoriteFoods().add("족발");
+            member.getFavoriteFoods().add("피자");
+
+            member.getAddressHistory().add(new Address("old1", "oldStreet", "1"));
+            member.getAddressHistory().add(new Address("old2", "oldStreet", "2"));
+
             em.persist(member);
 
-            // 역방향(주인이 아닌 방향) 연관관계 설정
-            // team.getMembers().add(member);
+            em.flush();
+            em.clear();
 
-            // 1차 캐시 DB와 동기화
-            /*em.flush();
-            em.clear();*/
-
-            System.out.println("====================");
-            Team findTeam = em.find(Team.class, team.getId());
-            System.out.println("====================");
-
-            List<Member> members = findTeam.getMembers();
-            for (Member m : members) {
-                System.out.println("m.getName() = " + m.getName());
-            }
-            System.out.println("====================");
-
-
-//            Member member = new Member();
-//            member.setName("member1");
+            System.out.println("=======START=======");
+            Member findMember = em.find(Member.class, member.getId());
+//            List<Address> addressHistory = findMember.getAddressHistory();
+//            for (Address address : addressHistory) {
+//                System.out.println("address = " + address.getCity());
+//            }
 //
-//            em.persist(member);
-//
-//            Team team = new Team();
-//            team.setName("teamA");
-//            team.getMembers().add(member);
-//
-//            em.persist(team);
-//
-//            tx.commit();
+//            Set<String> favoriteFoods = findMember.getFavoriteFoods();
+//            for (String favoriteFood : favoriteFoods) {
+//                System.out.println("favoriteFood = " + favoriteFood);
+//            }
+
+            Address a = findMember.getHomeAddress();
+            findMember.setHomeAddress(new Address("newCity", a.getStreet(), a.getZipcode()));
+
+            //치킨 -> 한식
+            findMember.getFavoriteFoods().remove("치킨");
+            findMember.getFavoriteFoods().add("한식");
+
+            findMember.getAddressHistory().remove(new Address("old1", "oldStreet", "1"));
+            findMember.getAddressHistory().add(new Address("newCity1", "oldStreet", "1"));
+
+            tx.commit();
         } catch (Exception e) {
             tx.rollback();
         }finally {
